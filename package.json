@@ -1,0 +1,29 @@
+{
+  "name": "rf-release",
+  "version": "0.1.0",
+  "description": "tag, push, and publish to npm and bower",
+  "main": "./bin/release",
+  "bin": {
+    "release": "./bin/release"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rpflorence/rf-release.git"
+  },
+  "keywords": [
+    "release"
+  ],
+  "author": "Ryan Florence",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rpflorence/rf-release/issues"
+  },
+  "homepage": "https://github.com/rpflorence/rf-release",
+  "dependencies": {
+    "prompt": "~0.2.11",
+    "cli-color": "~0.2.3"
+  }
+}
