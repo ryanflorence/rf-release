@@ -3,7 +3,7 @@ var prompt = require('prompt');
 var fs = require('fs');
 var exec = require('child_process').exec;
 var color = require('cli-color');
-var blue = color.blue;
+var cyan = color.cyan;
 var yellow = color.yellow;
 
 var schema = {
@@ -24,10 +24,12 @@ prompt.get(schema, function(err, result) {
   var version = 'v'+rawVersion;
   updateJSON('package', rawVersion);
   updateJSON('bower', rawVersion);
-  commit(version, function() {
-    tag(version, function() {
-      publish(version);
-    })
+  ex('npm test', function() {
+    commit(version, function() {
+      tag(version, function() {
+        publish(version);
+      })
+    });
   });
 });
 
@@ -48,7 +50,7 @@ function publish(version) {
 }
 
 function ex(command, cb) {
-  log(blue('exec:'), yellow(command));
+  log(cyan('exec:'), yellow(command));
   exec(command, execHandler(cb));
 }
 
@@ -69,7 +71,7 @@ function updateJSON(pkg, version) {
   var json = readJSON(path);
   json.version = version;
   writeJSON(path, json);
-  log(blue('updated'), path);
+  log(cyan('updated'), path);
 }
 
 function version() {
@@ -86,6 +88,6 @@ function writeJSON(path, data) {
 
 function log() {
   var args = [].slice.call(arguments, 0);
-  console.log.apply(console, [blue('release:')].concat(args));
+  console.log.apply(console, [cyan('release:')].concat(args));
 }
 
