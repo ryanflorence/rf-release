@@ -1,6 +1,6 @@
 {
   "name": "rf-release",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "tag, push, and publish to npm and bower",
   "main": "./bin/release",
   "bin": {
