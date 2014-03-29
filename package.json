@@ -24,6 +24,7 @@
   "homepage": "https://github.com/rpflorence/rf-release",
   "dependencies": {
     "prompt": "~0.2.11",
-    "cli-color": "~0.2.3"
+    "cli-color": "~0.2.3",
+    "rf-changelog": "^0.1.0"
   }
 }
