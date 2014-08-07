@@ -25,6 +25,6 @@
   "dependencies": {
     "prompt": "~0.2.11",
     "cli-color": "~0.2.3",
-    "rf-changelog": "0.2.0"
+    "rf-changelog": "0.3.0"
   }
 }
