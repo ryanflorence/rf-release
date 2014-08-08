@@ -66,7 +66,8 @@ But I have a build step before I can tag and publish!
 -----------------------------------------------------
 
 That's fine, just do your build first w/o committing, then run
-`release`. It'll all go in the same commit.
+`release`. It'll all go in the same commit. For example,
+[react-router][2]'s release script does this.
 
 License and Copyright
 ---------------------
@@ -77,4 +78,5 @@ MIT License
 
 
   [1]:https://github.com/rpflorence/rf-changelog
+  [2]:https://github.com/rackt/react-router/blob/master/script/release
 
