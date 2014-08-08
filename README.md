@@ -1,7 +1,7 @@
 rf-release
 ==========
 
-Tag, push, and publish your repositories with one command.
+Tag, push, changelog, and publish your repositories with one command.
 
 Installation
 ------------
@@ -14,6 +14,32 @@ npm install rf-release -g
 
 Usage
 -----
+
+### BEFORE YOUR FIRST RUN
+
+There are a couple gotchas I haven't spent time to smooth over for
+before your first run.
+
+1. Ensure you have a semver style git tag in the past, otherwise the
+   changelog script will fail.
+
+   ``sh
+   git checkout <some old commit>
+   git tag v0.0.0
+   git checkout master
+   ``
+
+2. Make sure you've committed a blank `CHANGELOG.md` to git. The code
+   that creates the release commit uses `git commit -am` so if
+   `CHANGELOG.md` is a new file, it won't be included in the commit.
+
+    ```sh
+    touch CHANGELOG.md
+    git add CHANGELOG.md
+    git commit -m 'added changelog because ryan is lazy'
+    ```
+
+Okay, now you're ready:
 
 ```bash
 # if `node_modules/.bin` is in your path
@@ -32,6 +58,7 @@ What it does
 3. commits the version updates with a simple commit message
    ("release {version}")
 4. creates the tag "v{version}"
+5. generates a changelog with [rf-changelog][1]
 5. pushes master and the new tag to origin
 6. publishes to npm
 
@@ -46,5 +73,8 @@ License and Copyright
 
 MIT License
 
-(c) 2013 Ryan Florence
+(c) 2014 Ryan Florence
+
+
+  [1]:https://github.com/rpflorence/rf-changelog
 
