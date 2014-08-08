@@ -17,17 +17,17 @@ Usage
 
 ### BEFORE YOUR FIRST RUN
 
-There are a couple gotchas I haven't spent time to smooth over for
-before your first run.
+There are a couple gotchas I haven't spent time to smooth over. Before
+your first run:
 
 1. Ensure you have a semver style git tag in the past, otherwise the
    changelog script will fail.
 
-   ``sh
+   ```sh
    git checkout <some old commit>
    git tag v0.0.0
    git checkout master
-   ``
+   ```
 
 2. Make sure you've committed a blank `CHANGELOG.md` to git. The code
    that creates the release commit uses `git commit -am` so if
