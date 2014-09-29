@@ -41,7 +41,9 @@ function commit(version, cb) {
 }
 
 function tag(version, cb) {
-  ex('git tag '+version, cb);
+  ex('git tag '+version, function() {
+    ex('git tag latest -f', cb);
+  });
 }
 
 function publish(version) {
