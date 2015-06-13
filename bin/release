@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+
+var argv = require('minimist')(process.argv.slice(2));
 var prompt = require('prompt');
 var fs = require('fs');
 var exec = require('child_process').exec;
@@ -7,41 +9,59 @@ var cyan = color.cyan;
 var yellow = color.yellow;
 var changelog = require('rf-changelog');
 
+var pattern = /^[0-9]\.[0-9]+\.[0-9](-.+)?/;
+var version = argv.v || argv.version;
+var folder = argv.f || argv.folder;
 var schema = {
-  properties: {
-    version: {
-      description: 'version? (old is '+version()+')',
-      pattern: /^[0-9]\.[0-9]+\.[0-9](-.+)?/,
-      message: 'Must be a valid semver string i.e. 1.0.2, 2.3.0-beta.1',
-      required: true
-    },
-    folder: {
-      description: 'which folder should be published?',
-      default: './'
-    }
-  }
+  properties: {}
 };
 
-prompt.start();
+// If version wasn't supplied via argv, add it to prompt schema
+if (!version || !pattern.test(version)) {
+  schema.properties.version = {
+    description: 'version? (old is '+getCurrentVersion()+')',
+    pattern: pattern,
+    message: 'Must be a valid semver string i.e. 1.0.2, 2.3.0-beta.1',
+    required: true
+  };
+}
 
-prompt.get(schema, function(err, result) {
-  var rawVersion = result.version;
-  var version = 'v'+rawVersion;
-  var folder = result.folder;
+// If folder wasn't supplied via argv, add it to prompt schema
+if (!folder) {
+  schema.properties.folder = {
+    description: 'which folder should be published?',
+    default: './'
+  };
+}
 
-  updateJSON('package', rawVersion);
-  updateJSON('bower', rawVersion);
+// If version or folder are missing, run through prompt
+if (schema.properties.version || schema.properties.folder) {
+  prompt.start();
+  prompt.get(schema, function(err, result) {
+    release(result.version || version, result.folder || folder);
+  });
+}
+// Otherwise we have what's needed, just do it
+else {
+  release(version, folder);
+}
+
+function release(version, folder) {
+  updateJSON('package', version);
+  updateJSON('bower', version);
+
+  var tagVersion = 't'+version;
 
   ex('npm test', function() {
-    changelog('-t '+version, function() {
-      commit(version, function() {
-        tag(version, function() {
-          publish(version, folder);
+    changelog('-t '+tagVersion, function() {
+      commit(tagVersion, function() {
+        tag(tagVersion, function() {
+          publish(tagVersion, folder);
         });
       });
     });
   });
-});
+}
 
 function commit(version, cb) {
   ex('git commit -am "release '+version+'"', cb);
@@ -86,7 +106,7 @@ function updateJSON(pkg, version) {
   log(cyan('updated'), path);
 }
 
-function version() {
+function getCurrentVersion() {
   return readJSON('./package.json').version;
 }
 
