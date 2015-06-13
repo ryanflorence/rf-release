@@ -14,6 +14,10 @@ var schema = {
       pattern: /^[0-9]\.[0-9]+\.[0-9](-.+)?/,
       message: 'Must be a valid semver string i.e. 1.0.2, 2.3.0-beta.1',
       required: true
+    },
+    folder: {
+      description: 'which folder should be published?',
+      default: './'
     }
   }
 };
@@ -23,13 +27,16 @@ prompt.start();
 prompt.get(schema, function(err, result) {
   var rawVersion = result.version;
   var version = 'v'+rawVersion;
+  var folder = result.folder;
+
   updateJSON('package', rawVersion);
   updateJSON('bower', rawVersion);
+
   ex('npm test', function() {
     changelog('-t '+version, function() {
       commit(version, function() {
         tag(version, function() {
-          publish(version);
+          publish(version, folder);
         });
       });
     });
@@ -46,10 +53,10 @@ function tag(version, cb) {
   });
 }
 
-function publish(version) {
+function publish(version, folder) {
   ex('git push origin master', function() {
     ex('git push origin '+version, function() {
-      ex('npm publish');
+      ex('npm publish '+folder);
     });
   });
 }
