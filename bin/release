@@ -50,7 +50,7 @@ function release(version, folder) {
   updateJSON('package', version);
   updateJSON('bower', version);
 
-  var tagVersion = 't'+version;
+  var tagVersion = 'v'+version;
 
   ex('npm test', function() {
     changelog('-t '+tagVersion, function() {
